@@ -44,3 +44,20 @@ app.post('/produtos', (req, res) => {
 app.listen(PORT, () => {
     console.log(`Servidor rodando em http://localhost:${PORT}`);
 });
+// Rota 3: Deletar produto (DELETE)
+app.delete('/produtos/:id', (req, res) => {
+    // Pega o ID que veio na URL e converte para número
+    const id = parseInt(req.params.id);
+    
+    // Procura em qual posição da lista esse produto está
+    const index = produtos.findIndex(produto => produto.id === id);
+
+    // Se o index for diferente de -1, o produto foi encontrado
+    if (index !== -1) {
+        produtos.splice(index, 1); // Remove 1 item a partir daquela posição
+        console.log(`Produto com ID ${id} foi apagado.`);
+        res.status(200).json({ mensagem: "Produto apagado com sucesso!" });
+    } else {
+        res.status(404).json({ erro: "Produto não encontrado" });
+    }
+});
